@@ -1,5 +1,6 @@
 ﻿FROM node:20-slim AS builder
 WORKDIR /app
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 COPY package.json ./
 COPY tsconfig.json ./
 RUN npm install
@@ -7,7 +8,8 @@ COPY src ./src
 RUN npm run build
 
 FROM node:20-slim
-RUN addgroup --system app && adduser --system --ingroup app app
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/* \
+  && addgroup --system app && adduser --system --ingroup app app
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules

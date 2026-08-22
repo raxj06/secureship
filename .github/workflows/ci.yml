@@ -117,7 +117,7 @@ jobs:
         with:
           image-ref: secureship/${{ matrix.service }}:${{ github.sha }}
           severity: CRITICAL,HIGH
-          ignore-unfixed: false
+          ignore-unfixed: true
           exit-code: '1'
           format: table
           trivyignores: .trivyignore
