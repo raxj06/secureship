@@ -1,0 +1,68 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: secureship
+      POSTGRES_PASSWORD: secureship
+      POSTGRES_DB: secureship_orders
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U secureship']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  order-service:
+    build: ./services/order-service
+    ports:
+      - '8001:8001'
+    environment:
+      DATABASE_URL: postgresql://secureship:secureship@postgres:5432/secureship_orders?schema=public
+      JWT_SECRET: dev-secret
+      PORT: '8001'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  tracking-service:
+    build: ./services/tracking-service
+    ports:
+      - '8002:8002'
+    environment:
+      DATABASE_URL: postgresql://secureship:secureship@postgres:5432/secureship_tracking?schema=public
+      PORT: '8002'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  notification-service:
+    build: ./services/notification-service
+    ports:
+      - '8003:8003'
+    environment:
+      PORT: '8003'
+
+  api-gateway:
+    build: ./services/api-gateway
+    ports:
+      - '8000:8000'
+    environment:
+      JWT_SECRET: dev-secret
+      PORT: '8000'
+      ORDER_SERVICE_URL: http://order-service:8001
+      TRACKING_SERVICE_URL: http://tracking-service:8002
+      NOTIFICATION_SERVICE_URL: http://notification-service:8003
+    depends_on:
+      order-service:
+        condition: service_started
+      tracking-service:
+        condition: service_started
+      notification-service:
+        condition: service_started
+
+volumes:
+  postgres-data:
