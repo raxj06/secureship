@@ -22,8 +22,17 @@ describe('orders', () => {
     expect(res.status).toBe(401);
   });
   it('creates order', async () => {
-    mockedPrisma.order.create.mockResolvedValue({ id: '1', item: 'box', quantity: 2, userId: 'u1', status: 'pending' });
-    const res = await request(app).post('/orders').set('Authorization', `Bearer ${token}`).send({ item: 'box', quantity: 2 });
+    mockedPrisma.order.create.mockResolvedValue({
+      id: '1',
+      item: 'box',
+      quantity: 2,
+      userId: 'u1',
+      status: 'pending',
+    });
+    const res = await request(app)
+      .post('/orders')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ item: 'box', quantity: 2 });
     expect(res.status).toBe(201);
     expect(res.body.item).toBe('box');
   });

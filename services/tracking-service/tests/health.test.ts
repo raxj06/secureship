@@ -1,5 +1,15 @@
 jest.mock('../src/lib/prisma', () => ({
-  prisma: { $queryRaw: jest.fn().mockResolvedValue(1), trackingEvent: { findMany: jest.fn().mockResolvedValue([]), create: jest.fn().mockImplementation((a: { data: Record<string, unknown> }) => Promise.resolve({ id: '1', ...a.data })) } },
+  prisma: {
+    $queryRaw: jest.fn().mockResolvedValue(1),
+    trackingEvent: {
+      findMany: jest.fn().mockResolvedValue([]),
+      create: jest
+        .fn()
+        .mockImplementation((a: { data: Record<string, unknown> }) =>
+          Promise.resolve({ id: '1', ...a.data }),
+        ),
+    },
+  },
 }));
 import request from 'supertest';
 import app from '../src/app';

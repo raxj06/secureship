@@ -20,27 +20,43 @@ const NOTIFICATION_SERVICE_URL = process.env.NOTIFICATION_SERVICE_URL || 'http:/
 // Auth routes — proxied without gateway auth (login/register are public)
 app.use(
   '/api/auth',
-  createProxyMiddleware({ target: ORDER_SERVICE_URL, changeOrigin: true, pathRewrite: { '^/api/auth': '/auth' } }),
+  createProxyMiddleware({
+    target: ORDER_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: { '^/api/auth': '/auth' },
+  }),
 );
 
 // Orders — JWT required at gateway
 app.use(
   '/api/orders',
   authMiddleware,
-  createProxyMiddleware({ target: ORDER_SERVICE_URL, changeOrigin: true, pathRewrite: { '^/api/orders': '/orders' } }),
+  createProxyMiddleware({
+    target: ORDER_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: { '^/api/orders': '/orders' },
+  }),
 );
 
 // Tracking
 app.use(
   '/api/tracking',
-  createProxyMiddleware({ target: TRACKING_SERVICE_URL, changeOrigin: true, pathRewrite: { '^/api/tracking': '/tracking' } }),
+  createProxyMiddleware({
+    target: TRACKING_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: { '^/api/tracking': '/tracking' },
+  }),
 );
 
 // Notify — JWT required
 app.use(
   '/api/notify',
   authMiddleware,
-  createProxyMiddleware({ target: NOTIFICATION_SERVICE_URL, changeOrigin: true, pathRewrite: { '^/api/notify': '/notify' } }),
+  createProxyMiddleware({
+    target: NOTIFICATION_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: { '^/api/notify': '/notify' },
+  }),
 );
 
 export default app;
