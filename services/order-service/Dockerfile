@@ -1,6 +1,6 @@
 ﻿FROM node:22-slim AS builder
 WORKDIR /app
-RUN apt-get update && apt-get install -y openssl && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y openssl && apt-get upgrade -y && npm install -g npm@latest && rm -rf /var/lib/apt/lists/*
 COPY package.json ./
 COPY tsconfig.json ./
 RUN npm install
@@ -8,7 +8,7 @@ COPY src ./src
 RUN npm run build
 
 FROM node:22-slim
-RUN apt-get update && apt-get install -y openssl && apt-get upgrade -y && rm -rf /var/lib/apt/lists/* \
+RUN apt-get update && apt-get install -y openssl && apt-get upgrade -y && npm install -g npm@latest && rm -rf /var/lib/apt/lists/* \
   && addgroup --system app && adduser --system --ingroup app app
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
