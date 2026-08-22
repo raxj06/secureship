@@ -1,0 +1,14 @@
+title = "SecureShip gitleaks config"
+
+[allowlist]
+  description = "global allowlist"
+  paths = [
+    '''\.gitleaks\.toml''',
+    '''\.trivyignore''',
+  ]
+  # example placeholders that look like secrets but aren't
+  regexes = [
+    '''EXAMPLE_.*''',
+    '''placeholder''',
+    '''your-.*-here''',
+  ]
