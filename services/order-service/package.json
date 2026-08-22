@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "prisma generate && tsc -p tsconfig.json",
+    "build": "prisma generate --schema=src/prisma/schema.prisma && tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn src/server.ts",
     "test": "jest --coverage",
