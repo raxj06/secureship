@@ -1,0 +1,131 @@
+name: CI
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    name: Lint / Typecheck / Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npx eslint services --ext .ts
+
+      - name: Format check
+        run: npx prettier --check "**/*.{ts,js,json,yml,yaml}"
+
+      - name: Type check
+        run: |
+          npx tsc --noEmit --project services/api-gateway/tsconfig.json
+          npx tsc --noEmit --project services/order-service/tsconfig.json
+          npx tsc --noEmit --project services/tracking-service/tsconfig.json
+          npx tsc --noEmit --project services/notification-service/tsconfig.json
+
+      - name: Tests with coverage
+        run: npm test -- --coverage
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: services/*/coverage/
+
+  security:
+    name: Gitleaks + Trivy FS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trivy FS scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL,HIGH
+          ignore-unfixed: false
+          exit-code: '1'
+          format: table
+          trivyignores: .trivyignore
+
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    needs: [lint-and-test]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Tests with coverage (for Sonar)
+        run: npm test -- --coverage
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  docker:
+    name: Build / Trivy Image / SBOM (${{ matrix.service }})
+    runs-on: ubuntu-latest
+    needs: [lint-and-test, security]
+    strategy:
+      matrix:
+        service: [api-gateway, order-service, tracking-service, notification-service]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t secureship/${{ matrix.service }}:${{ github.sha }} ./services/${{ matrix.service }}
+
+      - name: Trivy image scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: secureship/${{ matrix.service }}:${{ github.sha }}
+          severity: CRITICAL,HIGH
+          ignore-unfixed: false
+          exit-code: '1'
+          format: table
+          trivyignores: .trivyignore
+
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          image: secureship/${{ matrix.service }}:${{ github.sha }}
+          format: cyclonedx-json
+          artifact-name: sbom-${{ matrix.service }}.cyclonedx.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ matrix.service }}
+          path: sbom-${{ matrix.service }}.cyclonedx.json
