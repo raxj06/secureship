@@ -21,6 +21,10 @@ spec:
         app.kubernetes.io/name: {{ $.Chart.Name }}
         app.kubernetes.io/instance: {{ $.Release.Name }}
         app.kubernetes.io/component: {{ $name }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ $svc.port }}"
+        prometheus.io/path: "/metrics"
     spec:
       serviceAccountName: {{ $name }}
       containers:
