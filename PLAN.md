@@ -2,30 +2,30 @@
 
 ## Final Tech Decisions
 
-| Concern | Choice |
-|---------|--------|
-| Backend | Node.js + Express.js + TypeScript |
-| ORM | Prisma + PostgreSQL |
-| Auth | Custom JWT (jsonwebtoken), user data in order-service DB |
-| SAST | SonarCloud + eslint-plugin-security (lint layer) |
-| SCA | Trivy filesystem scan (replaces npm audit) |
-| Secret Scan | Gitleaks |
-| Container Scan | Trivy |
-| SBOM | Syft |
-| Admission Control | Kyverno (4 policies) |
-| Local dev | Docker Compose only |
-| AWS region | ap-south-1 |
-| EKS cost mode | Spot nodes (t3.medium), single NAT GW, RDS single-AZ db.t3.micro |
-| ECR | Separate repo per service, lifecycle policies |
-| Image tag | Git SHA only (no `latest`) |
-| Branches | main + develop + deploy |
-| GitOps target | `deploy` branch (ArgoCD watches it) |
-| AWS auth from CI | GitHub OIDC role assumption (no static keys) |
-| Environments | dev + prod (one cluster, two namespaces) |
-| GitOps | ArgoCD in same EKS cluster |
-| Secrets | .env locally, AWS Secrets Manager + External Secrets Operator in cluster |
-| Observability | Prometheus + Grafana + Loki (kube-prometheus-stack) |
-| DAST | OWASP ZAP (against dev ALB) |
+| Concern           | Choice                                                                   |
+| ----------------- | ------------------------------------------------------------------------ |
+| Backend           | Node.js + Express.js + TypeScript                                        |
+| ORM               | Prisma + PostgreSQL                                                      |
+| Auth              | Custom JWT (jsonwebtoken), user data in order-service DB                 |
+| SAST              | SonarCloud + eslint-plugin-security (lint layer)                         |
+| SCA               | Trivy filesystem scan (replaces npm audit)                               |
+| Secret Scan       | Gitleaks                                                                 |
+| Container Scan    | Trivy                                                                    |
+| SBOM              | Syft                                                                     |
+| Admission Control | Kyverno (4 policies)                                                     |
+| Local dev         | Docker Compose only                                                      |
+| AWS region        | ap-south-1                                                               |
+| EKS cost mode     | Spot nodes (t3.medium), single NAT GW, RDS single-AZ db.t3.micro         |
+| ECR               | Separate repo per service, lifecycle policies                            |
+| Image tag         | Git SHA only (no `latest`)                                               |
+| Branches          | main + develop + deploy                                                  |
+| GitOps target     | `deploy` branch (ArgoCD watches it)                                      |
+| AWS auth from CI  | GitHub OIDC role assumption (no static keys)                             |
+| Environments      | dev + prod (one cluster, two namespaces)                                 |
+| GitOps            | ArgoCD in same EKS cluster                                               |
+| Secrets           | .env locally, AWS Secrets Manager + External Secrets Operator in cluster |
+| Observability     | Prometheus + Grafana + Loki (kube-prometheus-stack)                      |
+| DAST              | OWASP ZAP (against dev ALB)                                              |
 
 ---
 
@@ -33,16 +33,16 @@
 
 ### Cost breakdown estimate (ap-south-1, monthly)
 
-| Resource | Approx. cost/month |
-|----------|-------------------|
-| EKS control plane | $73 |
-| NAT Gateway (1) | ~$32 + data |
-| ALB | ~$16 + LCU |
-| RDS db.t3.micro (single-AZ) | ~$12 |
-| ECR (4 repos, minimal storage) | ~$1 |
-| S3 (TF state) | <$1 |
-| Spot instances (2x t3.medium) | ~$15 |
-| **Total running** | **~$150/month** |
+| Resource                       | Approx. cost/month |
+| ------------------------------ | ------------------ |
+| EKS control plane              | $73                |
+| NAT Gateway (1)                | ~$32 + data        |
+| ALB                            | ~$16 + LCU         |
+| RDS db.t3.micro (single-AZ)    | ~$12               |
+| ECR (4 repos, minimal storage) | ~$1                |
+| S3 (TF state)                  | <$1                |
+| Spot instances (2x t3.medium)  | ~$15               |
+| **Total running**              | **~$150/month**    |
 
 ### Strategy to stay under $100
 
@@ -57,16 +57,16 @@
 
 ### Phased AWS spend
 
-| Phase | AWS resources needed | Estimated cost |
-|-------|---------------------|---------------|
-| 1-3 | None (local + GitHub Actions free tier) | $0 |
-| 4 | ECR + OIDC provider (foundation/) | <$2 |
-| 5 | Same | $0 |
-| 6-8 | Full cluster up for testing (~10 hrs) | ~$25 |
-| 9 | ZAP against running cluster (~2 hrs) | ~$5 |
-| 10 | Observability testing (~8 hrs) | ~$20 |
-| 11 | Failure demos + screenshots (~6 hrs) | ~$15 |
-| **Total** | | **~$67** |
+| Phase     | AWS resources needed                    | Estimated cost |
+| --------- | --------------------------------------- | -------------- |
+| 1-3       | None (local + GitHub Actions free tier) | $0             |
+| 4         | ECR + OIDC provider (foundation/)       | <$2            |
+| 5         | Same                                    | $0             |
+| 6-8       | Full cluster up for testing (~10 hrs)   | ~$25           |
+| 9         | ZAP against running cluster (~2 hrs)    | ~$5            |
+| 10        | Observability testing (~8 hrs)          | ~$20           |
+| 11        | Failure demos + screenshots (~6 hrs)    | ~$15           |
+| **Total** |                                         | **~$67**       |
 
 Buffer: ~$33 for mistakes and re-creates.
 
@@ -153,6 +153,7 @@ secureship/
 **Goal:** GitHub repo with correct structure, branches, protection, and shared configs.
 
 **Tasks:**
+
 - Create GitHub repo `secureship`
 - Push initial structure with `main`, `develop`, and `deploy` branches
 - Set branch protection on `main` (require PR + CI pass)
@@ -197,34 +198,38 @@ service-name/
 ### Services
 
 **api-gateway** (port 8000)
+
 - Reverse proxy via `http-proxy-middleware`
 - JWT validation middleware (verifies token, forwards user context)
 - No DB
 - Endpoints: `GET /health`, `GET /ready`, `GET /metrics`
 
 **order-service** (port 8001)
+
 - CRUD: `POST /orders`, `GET /orders/:id`, `GET /orders`, `PATCH /orders/:id`
 - Auth: `POST /auth/register`, `POST /auth/login`
 - Prisma schema: `User`, `Order`
 - Endpoints: `GET /health`, `GET /ready`, `GET /metrics`
 
 **tracking-service** (port 8002)
+
 - `GET /tracking/:orderId`, `POST /tracking/update`
 - Prisma schema: `TrackingEvent`
 - Endpoints: `GET /health`, `GET /ready`, `GET /metrics`
 
 **notification-service** (port 8003)
+
 - `POST /notify` (email/SMS trigger, SES stubbed locally)
 - No DB
 - Endpoints: `GET /health`, `GET /ready`, `GET /metrics`
 
 ### Endpoints contract
 
-| Endpoint | Purpose | Used by |
-|----------|---------|---------|
-| `GET /health` | Liveness probe (process alive) | K8s livenessProbe |
-| `GET /ready` | Readiness probe (DB connected where applicable) | K8s readinessProbe |
-| `GET /metrics` | Prometheus scrape (prom-client) | ServiceMonitor |
+| Endpoint       | Purpose                                         | Used by            |
+| -------------- | ----------------------------------------------- | ------------------ |
+| `GET /health`  | Liveness probe (process alive)                  | K8s livenessProbe  |
+| `GET /ready`   | Readiness probe (DB connected where applicable) | K8s readinessProbe |
+| `GET /metrics` | Prometheus scrape (prom-client)                 | ServiceMonitor     |
 
 ### Docker Compose
 
@@ -276,14 +281,14 @@ Steps:
 
 ### Security gates
 
-| Tool | Blocks on | Failure scenario |
-|------|-----------|-----------------|
-| Jest | Any test failure | §38 Failure 1 |
-| SonarCloud | Quality Gate fail | §11 |
-| Gitleaks | Any secret detected | §38 Failure 2 |
-| Trivy fs | HIGH/CRITICAL CVE | §38 Failure 3 |
-| Trivy image | HIGH/CRITICAL CVE | §38 Failure 4 |
-| Syft | Never blocks (artifact only) | — |
+| Tool        | Blocks on                    | Failure scenario |
+| ----------- | ---------------------------- | ---------------- |
+| Jest        | Any test failure             | §38 Failure 1    |
+| SonarCloud  | Quality Gate fail            | §11              |
+| Gitleaks    | Any secret detected          | §38 Failure 2    |
+| Trivy fs    | HIGH/CRITICAL CVE            | §38 Failure 3    |
+| Trivy image | HIGH/CRITICAL CVE            | §38 Failure 4    |
+| Syft        | Never blocks (artifact only) | —                |
 
 ### Secrets needed in GitHub
 
@@ -367,6 +372,7 @@ Steps:
 ### Promotion to prod
 
 Manual process:
+
 1. Open PR on `deploy` branch: copy tags from `environments/dev/values.yaml` to `environments/prod/values.yaml`
 2. Merge → ArgoCD syncs prod
 
@@ -456,13 +462,13 @@ Allow:
 
 ### Bootstrap components (via `terraform/bootstrap/`)
 
-| Component | Purpose |
-|-----------|---------|
-| AWS Load Balancer Controller | Creates ALB from Ingress resources |
-| metrics-server | Enables HPA |
-| External Secrets Operator | Syncs AWS Secrets Manager → K8s Secrets |
-| ArgoCD | GitOps controller |
-| Kyverno | Admission policies (installed here, policies in Phase 8) |
+| Component                    | Purpose                                                  |
+| ---------------------------- | -------------------------------------------------------- |
+| AWS Load Balancer Controller | Creates ALB from Ingress resources                       |
+| metrics-server               | Enables HPA                                              |
+| External Secrets Operator    | Syncs AWS Secrets Manager → K8s Secrets                  |
+| ArgoCD                       | GitOps controller                                        |
+| Kyverno                      | Admission policies (installed here, policies in Phase 8) |
 
 ### ArgoCD configuration
 
@@ -488,12 +494,12 @@ Revert the commit on `deploy` branch → ArgoCD auto-reverts the deployment. Thi
 
 ### Policies
 
-| Policy | Action | Failure scenario |
-|--------|--------|-----------------|
-| `disallow-privileged.yaml` | Block `privileged: true` | §38 Failure 5 |
-| `require-non-root.yaml` | Block pods without `runAsNonRoot: true` | §38 Failure 5 |
-| `require-resource-limits.yaml` | Block pods without requests/limits | — |
-| `restrict-registries.yaml` | Allow only `<account>.dkr.ecr.ap-south-1.amazonaws.com/*` | — |
+| Policy                         | Action                                                    | Failure scenario |
+| ------------------------------ | --------------------------------------------------------- | ---------------- |
+| `disallow-privileged.yaml`     | Block `privileged: true`                                  | §38 Failure 5    |
+| `require-non-root.yaml`        | Block pods without `runAsNonRoot: true`                   | §38 Failure 5    |
+| `require-resource-limits.yaml` | Block pods without requests/limits                        | —                |
+| `restrict-registries.yaml`     | Allow only `<account>.dkr.ecr.ap-south-1.amazonaws.com/*` | —                |
 
 ### Scope
 
@@ -539,11 +545,11 @@ Separated from ArgoCD — a ZAP false positive should not block deployments.
 
 ### Stack (installed via `terraform/bootstrap/`)
 
-| Component | Purpose |
-|-----------|---------|
+| Component             | Purpose                             |
+| --------------------- | ----------------------------------- |
 | kube-prometheus-stack | Prometheus + Grafana + Alertmanager |
-| Loki | Log aggregation |
-| Promtail | Log shipping from nodes |
+| Loki                  | Log aggregation                     |
+| Promtail              | Log shipping from nodes             |
 
 ### Metrics (from `/metrics` endpoints built in Phase 2)
 
@@ -560,14 +566,14 @@ Separated from ArgoCD — a ZAP false positive should not block deployments.
 
 ### Alerts
 
-| Alert | Condition |
-|-------|-----------|
-| PodCrashLooping | restarts > 3 in 5m |
-| HighCPU | pod CPU > 80% for 5m |
-| HighMemory | pod memory > 80% for 5m |
-| HighErrorRate | 5xx > 5% of requests for 5m |
-| ReplicasUnavailable | available < desired for 5m |
-| NodeNotReady | node condition != Ready for 5m |
+| Alert               | Condition                      |
+| ------------------- | ------------------------------ |
+| PodCrashLooping     | restarts > 3 in 5m             |
+| HighCPU             | pod CPU > 80% for 5m           |
+| HighMemory          | pod memory > 80% for 5m        |
+| HighErrorRate       | 5xx > 5% of requests for 5m    |
+| ReplicasUnavailable | available < desired for 5m     |
+| NodeNotReady        | node condition != Ready for 5m |
 
 Alertmanager → Slack webhook (or Discord).
 
@@ -581,15 +587,15 @@ Alertmanager → Slack webhook (or Discord).
 
 ### Failure demonstrations
 
-| # | Scenario | How to trigger | Expected result |
-|---|----------|---------------|-----------------|
-| 1 | Unit test fails | Break a test, push | CI fails, no deploy |
-| 2 | Secret committed | Add fake AWS key to code | Gitleaks blocks |
-| 3 | Vulnerable dependency | Add old lodash version | Trivy fs blocks |
-| 4 | Vulnerable Docker image | Use old base image | Trivy image blocks |
-| 5 | Kyverno violation | Deploy with `privileged: true` | Admission denied |
-| 6 | Application crash | Add crash endpoint, call it | Pod restarts, Prometheus records, Grafana shows |
-| 7 | GitOps drift | `kubectl edit` a deployment | ArgoCD detects OutOfSync, self-heals |
+| #   | Scenario                | How to trigger                 | Expected result                                 |
+| --- | ----------------------- | ------------------------------ | ----------------------------------------------- |
+| 1   | Unit test fails         | Break a test, push             | CI fails, no deploy                             |
+| 2   | Secret committed        | Add fake AWS key to code       | Gitleaks blocks                                 |
+| 3   | Vulnerable dependency   | Add old lodash version         | Trivy fs blocks                                 |
+| 4   | Vulnerable Docker image | Use old base image             | Trivy image blocks                              |
+| 5   | Kyverno violation       | Deploy with `privileged: true` | Admission denied                                |
+| 6   | Application crash       | Add crash endpoint, call it    | Pod restarts, Prometheus records, Grafana shows |
+| 7   | GitOps drift            | `kubectl edit` a deployment    | ArgoCD detects OutOfSync, self-heals            |
 
 ### Rollback demo (§37)
 
@@ -614,20 +620,20 @@ Alertmanager → Slack webhook (or Discord).
 
 ## Build Order Summary
 
-| Phase | Deliverable | Branch | AWS cost |
-|-------|-------------|--------|----------|
-| 1 | Repo scaffold + configs | develop | $0 |
-| 2 | All 4 services + Docker Compose | develop | $0 |
-| 3 | GitHub Actions CI (no publish) | develop → PR → main | $0 |
-| 4 | Terraform AWS infra | develop | ~$2 |
-| 5 | CI publish + promotion | main | <$1 |
-| 6 | Helm charts | develop | $0 |
-| 7 | ArgoCD + cluster bootstrap | develop | ~$10 |
-| 8 | Kyverno policies | develop | ~$5 |
-| 9 | DAST | develop | ~$5 |
-| 10 | Observability | develop | ~$20 |
-| 11 | Failure demos + docs | develop → PR → main | ~$15 |
-| **Total** | | | **~$58-67** |
+| Phase     | Deliverable                     | Branch              | AWS cost    |
+| --------- | ------------------------------- | ------------------- | ----------- |
+| 1         | Repo scaffold + configs         | develop             | $0          |
+| 2         | All 4 services + Docker Compose | develop             | $0          |
+| 3         | GitHub Actions CI (no publish)  | develop → PR → main | $0          |
+| 4         | Terraform AWS infra             | develop             | ~$2         |
+| 5         | CI publish + promotion          | main                | <$1         |
+| 6         | Helm charts                     | develop             | $0          |
+| 7         | ArgoCD + cluster bootstrap      | develop             | ~$10        |
+| 8         | Kyverno policies                | develop             | ~$5         |
+| 9         | DAST                            | develop             | ~$5         |
+| 10        | Observability                   | develop             | ~$20        |
+| 11        | Failure demos + docs            | develop → PR → main | ~$15        |
+| **Total** |                                 |                     | **~$58-67** |
 
 **Buffer remaining:** ~$33-42 for mistakes, re-creates, and extended sessions.
 
