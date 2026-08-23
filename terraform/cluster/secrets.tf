@@ -22,21 +22,38 @@ resource "aws_secretsmanager_secret_version" "jwt" {
 }
 
 # ESO IRSA role - allow external-secrets SA to read secureship/* secrets
+# ponytail: dual OIDC provider trust for EKS issuer migration (old vs new domain)
+locals {
+  oidc_id = split("/", module.eks.oidc_provider)[2]
+}
 resource "aws_iam_role" "eso" {
   name = "secureship-eso"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      Effect    = "Allow"
-      Principal = { Federated = module.eks.oidc_provider_arn }
-      Action    = "sts:AssumeRoleWithWebIdentity"
-      Condition = {
-        StringEquals = {
-          "${module.eks.oidc_provider}:sub" = "system:serviceaccount:external-secrets:external-secrets"
-          "${module.eks.oidc_provider}:aud" = "sts.amazonaws.com"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = { Federated = module.eks.oidc_provider_arn }
+        Action    = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "${replace(module.eks.oidc_provider_arn, "arn:aws:iam::${var.account_id}:oidc-provider/", "")}:sub" = "system:serviceaccount:external-secrets:external-secrets"
+            "${replace(module.eks.oidc_provider_arn, "arn:aws:iam::${var.account_id}:oidc-provider/", "")}:aud" = "sts.amazonaws.com"
+          }
+        }
+      },
+      {
+        Effect    = "Allow"
+        Principal = { Federated = "arn:aws:iam::${var.account_id}:oidc-provider/oidc.eks.${var.region}.amazonaws.com/id/${local.oidc_id}" }
+        Action    = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "oidc.eks.${var.region}.amazonaws.com/id/${local.oidc_id}:sub" = "system:serviceaccount:external-secrets:external-secrets"
+            "oidc.eks.${var.region}.amazonaws.com/id/${local.oidc_id}:aud" = "sts.amazonaws.com"
+          }
         }
       }
-    }]
+    ]
   })
   tags = { Project = "secureship" }
 }
