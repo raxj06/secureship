@@ -29,6 +29,13 @@ services:
       limits:
         cpu: 200m
         memory: 256Mi
+    secrets:
+      - key: DATABASE_URL
+        remoteKey: secureship/dev/database
+        property: DATABASE_URL
+      - key: JWT_SECRET
+        remoteKey: secureship/dev/jwt
+        property: JWT_SECRET
   tracking-service:
     repository: secureship/tracking-service
     tag: latest
@@ -41,6 +48,10 @@ services:
       limits:
         cpu: 200m
         memory: 256Mi
+    secrets:
+      - key: DATABASE_URL
+        remoteKey: secureship/dev/database
+        property: DATABASE_URL
   notification-service:
     repository: secureship/notification-service
     tag: latest

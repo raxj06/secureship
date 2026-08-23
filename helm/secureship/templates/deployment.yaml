@@ -45,4 +45,9 @@ spec:
             periodSeconds: 5
           resources:
             {{- toYaml $svc.resources | nindent 12 }}
+{{- if $svc.secrets }}
+          envFrom:
+            - secretRef:
+                name: {{ $name }}-secrets
+{{- end }}
 {{- end }}

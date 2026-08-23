@@ -22,6 +22,8 @@ spec:
                 - kube-system
                 - kyverno
                 - argocd
+                - external-secrets
+                - monitoring
       validate:
         message: "Using :latest tag is not allowed. Specify an immutable tag or digest."
         pattern:

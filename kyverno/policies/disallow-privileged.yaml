@@ -22,6 +22,8 @@ spec:
                 - kube-system
                 - kyverno
                 - argocd
+                - external-secrets
+                - monitoring
       validate:
         message: "Privileged containers are not allowed."
         pattern:

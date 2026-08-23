@@ -22,6 +22,8 @@ spec:
                 - kube-system
                 - kyverno
                 - argocd
+                - external-secrets
+                - monitoring
       validate:
         message: "Resource requests and limits are required."
         pattern:

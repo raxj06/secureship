@@ -17,3 +17,11 @@ output "vpc_id" {
 output "node_group_arn" {
   value = try(module.eks.eks_managed_node_groups["spot"].node_group_arn, null)
 }
+
+output "eso_role_arn" {
+  value = aws_iam_role.eso.arn
+}
+
+output "oidc_provider_arn" {
+  value = module.eks.oidc_provider_arn
+}
