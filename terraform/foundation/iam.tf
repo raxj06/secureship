@@ -4,7 +4,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_iam_openid_connect_provider" "github" {
   url             = "https://token.actions.githubusercontent.com"
   client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1", "1c58a3a851ece13696bd07c68a74fc325336fd23"]
 }
 
 # IAM role assumed by GitHub Actions (main branch only)
@@ -24,7 +24,11 @@ resource "aws_iam_role" "ci" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:${var.github_org}/${var.github_repo}:*"
+            "token.actions.githubusercontent.com:sub" = [
+              "repo:${var.github_org}/${var.github_repo}:*",
+              "repo:${var.github_org}@*/*:*",
+              "repo:${var.github_org}@*/${var.github_repo}@*:*"
+            ]
           }
         }
       }
