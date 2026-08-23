@@ -1,0 +1,22 @@
+# GitOps values for dev — image tags are updated by release.yml on deploy branch
+global:
+  registry: 081382613682.dkr.ecr.ap-south-1.amazonaws.com
+  region: ap-south-1
+
+services:
+  api-gateway:
+    repository: secureship/api-gateway
+    tag: placeholder
+    port: 8000
+  order-service:
+    repository: secureship/order-service
+    tag: placeholder
+    port: 8001
+  tracking-service:
+    repository: secureship/tracking-service
+    tag: placeholder
+    port: 8002
+  notification-service:
+    repository: secureship/notification-service
+    tag: placeholder
+    port: 8003
