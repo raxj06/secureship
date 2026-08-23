@@ -26,8 +26,8 @@ docker compose up --build
 
 ## Branches
 
-| Branch | Purpose |
-|--------|---------|
-| `main` | Protected, PR required |
-| `develop` | Integration |
-| `deploy` | ArgoCD target (image tags) |
+| Branch    | Purpose                    |
+| --------- | -------------------------- |
+| `main`    | Protected, PR required     |
+| `develop` | Integration                |
+| `deploy`  | ArgoCD target (image tags) |

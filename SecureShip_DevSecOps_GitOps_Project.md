@@ -7,7 +7,7 @@
 **Goal:** Build a production-style DevOps/DevSecOps platform
 demonstrating the complete software delivery lifecycle:
 
-``` text
+```text
 Developer
    ↓
 GitHub
@@ -51,81 +51,83 @@ The central story is:
 > policies enforce security. Prometheus/Grafana/Loki provide
 > observability.
 
-------------------------------------------------------------------------
+---
 
 # 2. Primary Objectives
 
 The finished project must demonstrate:
 
--   Git and GitHub workflow
--   CI/CD
--   DevSecOps
--   Docker
--   Container image scanning
--   SAST
--   Secret scanning
--   Dependency vulnerability scanning
--   SBOM generation
--   Container registry
--   Kubernetes
--   Helm
--   GitOps
--   Argo CD
--   Infrastructure as Code
--   Terraform
--   AWS
--   Kubernetes security
--   Kyverno
--   RBAC
--   NetworkPolicies
--   Resource requests/limits
--   HPA
--   Monitoring
--   Logging
--   Alerting
--   Troubleshooting
--   Documentation
+- Git and GitHub workflow
+- CI/CD
+- DevSecOps
+- Docker
+- Container image scanning
+- SAST
+- Secret scanning
+- Dependency vulnerability scanning
+- SBOM generation
+- Container registry
+- Kubernetes
+- Helm
+- GitOps
+- Argo CD
+- Infrastructure as Code
+- Terraform
+- AWS
+- Kubernetes security
+- Kyverno
+- RBAC
+- NetworkPolicies
+- Resource requests/limits
+- HPA
+- Monitoring
+- Logging
+- Alerting
+- Troubleshooting
+- Documentation
 
-------------------------------------------------------------------------
+---
 
 # 3. Recommended Technology Stack
 
-  Area                        Technology
-  --------------------------- ---------------------------------------
-  Application                 Node.js + Express
-  Frontend                    Optional React
-  Database                    PostgreSQL
-  Source Control              Git + GitHub
-  CI                          GitHub Actions
-  Containerization            Docker
-  Registry                    AWS ECR
-  Cloud                       AWS
-  Kubernetes                  Amazon EKS
-  Kubernetes Packaging        Helm
-  GitOps                      Argo CD
-  IaC                         Terraform
-  SAST                        SonarQube
-  Secret Scanning             Gitleaks
-  Dependency/Image Security   Trivy
-  SBOM                        Syft
-  Policy Enforcement          Kyverno
-  Metrics                     Prometheus
-  Dashboards                  Grafana
-  Logs                        Loki
-  Optional Log Agent          Promtail/Grafana Alloy
-  Networking                  Kubernetes Services + NetworkPolicy
-  Security                    RBAC + Pod Security Context + Kyverno
+Area Technology
+
+---
+
+Application Node.js + Express
+Frontend Optional React
+Database PostgreSQL
+Source Control Git + GitHub
+CI GitHub Actions
+Containerization Docker
+Registry AWS ECR
+Cloud AWS
+Kubernetes Amazon EKS
+Kubernetes Packaging Helm
+GitOps Argo CD
+IaC Terraform
+SAST SonarQube
+Secret Scanning Gitleaks
+Dependency/Image Security Trivy
+SBOM Syft
+Policy Enforcement Kyverno
+Metrics Prometheus
+Dashboards Grafana
+Logs Loki
+Optional Log Agent Promtail/Grafana Alloy
+Networking Kubernetes Services + NetworkPolicy
+Security RBAC + Pod Security Context + Kyverno
 
 Do not add tools merely for resume keyword count. Every tool must have a
 clear responsibility.
 
-------------------------------------------------------------------------
+---
 
 # 4. Architecture
 
 ## High-Level Architecture
 
-``` text
+```text
                            ┌─────────────────┐
                            │    Developer    │
                            └────────┬────────┘
@@ -192,7 +194,7 @@ clear responsibility.
                Grafana
 ```
 
-------------------------------------------------------------------------
+---
 
 # 5. Repository Strategy
 
@@ -202,7 +204,7 @@ Use two repositories.
 
 Example:
 
-``` text
+```text
 secureship-app/
 ├── src/
 ├── tests/
@@ -221,17 +223,17 @@ secureship-app/
 
 This repository contains:
 
--   Application source
--   Tests
--   Dockerfile
--   CI workflows
--   Application security configuration
+- Application source
+- Tests
+- Dockerfile
+- CI workflows
+- Application security configuration
 
 ## Repository 2: GitOps Repository
 
 Example:
 
-``` text
+```text
 secureship-gitops/
 ├── charts/
 │   └── secureship/
@@ -260,7 +262,7 @@ secureship-gitops/
 The application repository should not contain the final production
 deployment state.
 
-------------------------------------------------------------------------
+---
 
 # 6. Application
 
@@ -268,15 +270,15 @@ Build a simple backend application.
 
 Recommended:
 
--   Node.js
--   Express
--   PostgreSQL
+- Node.js
+- Express
+- PostgreSQL
 
 The application does not need complicated business logic.
 
 Example endpoints:
 
-``` text
+```text
 GET  /health
 GET  /api/products
 POST /api/products
@@ -291,7 +293,7 @@ the DevOps platform.
 
 Implement:
 
-``` text
+```text
 /health
 /ready
 ```
@@ -303,10 +305,10 @@ traffic.
 
 Kubernetes should use these endpoints for:
 
--   Liveness probe
--   Readiness probe
+- Liveness probe
+- Readiness probe
 
-------------------------------------------------------------------------
+---
 
 # 7. Docker
 
@@ -314,17 +316,17 @@ Create a production-style Dockerfile.
 
 Requirements:
 
--   Use a small base image where practical.
--   Use multi-stage builds if appropriate.
--   Do not run as root.
--   Do not hard-code secrets.
--   Use `.dockerignore`.
--   Pin important dependencies where appropriate.
--   Keep the final image minimal.
+- Use a small base image where practical.
+- Use multi-stage builds if appropriate.
+- Do not run as root.
+- Do not hard-code secrets.
+- Use `.dockerignore`.
+- Pin important dependencies where appropriate.
+- Keep the final image minimal.
 
 Example conceptual structure:
 
-``` text
+```text
 Build Stage
     ↓
 Install dependencies
@@ -342,20 +344,20 @@ Run application
 
 Topics to understand:
 
--   Docker image
--   Docker container
--   Layers
--   Dockerfile
--   Multi-stage builds
--   `.dockerignore`
--   Container networking
--   Volumes
--   Environment variables
--   Image tags
--   Image digest
--   Container registry
+- Docker image
+- Docker container
+- Layers
+- Dockerfile
+- Multi-stage builds
+- `.dockerignore`
+- Container networking
+- Volumes
+- Environment variables
+- Image tags
+- Image digest
+- Container registry
 
-------------------------------------------------------------------------
+---
 
 # 8. Git Workflow
 
@@ -363,7 +365,7 @@ Use feature branches.
 
 Example:
 
-``` text
+```text
 main
  │
  ├── feature/add-products-api
@@ -373,7 +375,7 @@ main
 
 Workflow:
 
-``` text
+```text
 Feature Branch
       ↓
 Pull Request
@@ -393,12 +395,12 @@ The `main` branch should be protected.
 
 Recommended branch protection:
 
--   Pull request required
--   CI checks required
--   No direct push
--   At least one review if possible
+- Pull request required
+- CI checks required
+- No direct push
+- At least one review if possible
 
-------------------------------------------------------------------------
+---
 
 # 9. CI Pipeline
 
@@ -406,7 +408,7 @@ Use GitHub Actions.
 
 Pipeline stages:
 
-``` text
+```text
 Checkout
    ↓
 Setup Runtime
@@ -436,13 +438,13 @@ Update GitOps Repository
 
 Separate pull-request validation from production release where useful.
 
-------------------------------------------------------------------------
+---
 
 # 10. Unit Testing
 
 Before security and deployment:
 
-``` text
+```text
 npm test
 ```
 
@@ -450,7 +452,7 @@ The pipeline must fail if tests fail.
 
 Demonstrate:
 
-``` text
+```text
 Code Change
     ↓
 Broken Test
@@ -462,7 +464,7 @@ No Deployment
 
 This establishes the first quality gate.
 
-------------------------------------------------------------------------
+---
 
 # 11. SonarQube --- SAST
 
@@ -470,17 +472,17 @@ Use SonarQube for static application analysis.
 
 Topics to understand:
 
--   SAST
--   Code smells
--   Bugs
--   Vulnerabilities
--   Security hotspots
--   Quality Gate
--   Code coverage
+- SAST
+- Code smells
+- Bugs
+- Vulnerabilities
+- Security hotspots
+- Quality Gate
+- Code coverage
 
 Pipeline concept:
 
-``` text
+```text
 Source Code
     ↓
 SonarQube
@@ -492,7 +494,7 @@ Quality Gate
 
 Do not merely run SonarQube. Configure a meaningful Quality Gate.
 
-------------------------------------------------------------------------
+---
 
 # 12. Gitleaks --- Secret Scanning
 
@@ -500,7 +502,7 @@ Use Gitleaks to detect secrets in source code.
 
 Examples of things it should detect:
 
-``` text
+```text
 AWS access keys
 API tokens
 Passwords
@@ -510,7 +512,7 @@ Database credentials
 
 Pipeline:
 
-``` text
+```text
 Git Repository
       ↓
 Gitleaks
@@ -528,7 +530,7 @@ Never put real credentials into Git.
 
 Use GitHub Secrets / AWS IAM / workload identity mechanisms instead.
 
-------------------------------------------------------------------------
+---
 
 # 13. Dependency Scanning
 
@@ -536,15 +538,15 @@ Use Trivy or another approved scanner to scan application dependencies.
 
 The goal is to identify:
 
--   Known CVEs
--   Vulnerable libraries
--   Risky package versions
+- Known CVEs
+- Vulnerable libraries
+- Risky package versions
 
 The pipeline should define a policy for what severity blocks the build.
 
 Example:
 
-``` text
+```text
 CRITICAL → Block
 HIGH     → Block
 MEDIUM   → Report
@@ -554,7 +556,7 @@ LOW      → Report
 The exact policy can be adjusted depending on the application and
 scanner output.
 
-------------------------------------------------------------------------
+---
 
 # 14. Container Image Scanning
 
@@ -562,13 +564,13 @@ This is a major DevSecOps component.
 
 Build:
 
-``` text
+```text
 secureship:<git-sha>
 ```
 
 Then scan:
 
-``` text
+```text
 Trivy
    ↓
 Docker Image
@@ -578,7 +580,7 @@ CVE Database
 
 Example policy:
 
-``` text
+```text
 CRITICAL vulnerabilities → FAIL
 HIGH vulnerabilities      → FAIL
 MEDIUM                    → Report
@@ -589,7 +591,7 @@ The pipeline must prevent vulnerable images from being published.
 
 Important concept:
 
-``` text
+```text
 Build Image
      ↓
 Scan Image
@@ -601,7 +603,7 @@ FAIL ─────→ Stop Pipeline
 Do not scan after deployment and call it a security gate. The scan must
 happen before production publication/deployment.
 
-------------------------------------------------------------------------
+---
 
 # 15. SBOM
 
@@ -609,14 +611,14 @@ Use Syft to generate a Software Bill of Materials.
 
 The SBOM should describe:
 
--   Application dependencies
--   OS packages
--   Libraries
--   Versions
+- Application dependencies
+- OS packages
+- Libraries
+- Versions
 
 Generate an artifact such as:
 
-``` text
+```text
 sbom.json
 ```
 
@@ -625,19 +627,19 @@ release.
 
 Understand:
 
--   What is an SBOM?
--   Why software supply-chain visibility matters
--   SPDX
--   CycloneDX
--   Dependency provenance
+- What is an SBOM?
+- Why software supply-chain visibility matters
+- SPDX
+- CycloneDX
+- Dependency provenance
 
-------------------------------------------------------------------------
+---
 
 # 16. Image Tagging
 
 Avoid relying on:
 
-``` text
+```text
 latest
 ```
 
@@ -645,19 +647,19 @@ Use immutable identifiers.
 
 Recommended:
 
-``` text
+```text
 secureship:<git-commit-sha>
 ```
 
 Example:
 
-``` text
+```text
 secureship:91ac442
 ```
 
 The image should be traceable to:
 
-``` text
+```text
 Git commit
     ↓
 CI run
@@ -671,7 +673,7 @@ Kubernetes deployment
 
 For advanced implementation, use the immutable image digest.
 
-------------------------------------------------------------------------
+---
 
 # 17. AWS ECR
 
@@ -679,7 +681,7 @@ Create an ECR repository.
 
 Flow:
 
-``` text
+```text
 GitHub Actions
       ↓
 Docker Build
@@ -693,17 +695,17 @@ Docker Push
 
 Topics:
 
--   ECR repositories
--   Image tags
--   Image digests
--   IAM
--   Registry authentication
--   Image lifecycle policies
+- ECR repositories
+- Image tags
+- Image digests
+- IAM
+- Registry authentication
+- Image lifecycle policies
 
 Configure an ECR lifecycle policy to prevent unlimited old images from
 accumulating.
 
-------------------------------------------------------------------------
+---
 
 # 18. Kubernetes
 
@@ -711,7 +713,7 @@ Deploy the application to Kubernetes.
 
 Core resources:
 
-``` text
+```text
 Namespace
 Deployment
 Service
@@ -725,44 +727,44 @@ NetworkPolicy
 
 Understand:
 
--   Pod
--   ReplicaSet
--   Deployment
--   Service
--   Ingress
--   Namespace
--   ConfigMap
--   Secret
--   ServiceAccount
--   Scheduler
--   Controller
--   Control plane
--   Worker node
+- Pod
+- ReplicaSet
+- Deployment
+- Service
+- Ingress
+- Namespace
+- ConfigMap
+- Secret
+- ServiceAccount
+- Scheduler
+- Controller
+- Control plane
+- Worker node
 
-------------------------------------------------------------------------
+---
 
 # 19. Kubernetes Deployment
 
 The Deployment should define:
 
--   Replica count
--   Container image
--   Resource requests
--   Resource limits
--   Liveness probe
--   Readiness probe
--   Security context
--   Service account
+- Replica count
+- Container image
+- Resource requests
+- Resource limits
+- Liveness probe
+- Readiness probe
+- Security context
+- Service account
 
 Example desired behavior:
 
-``` text
+```text
 replicas: 2
 ```
 
 If one pod fails:
 
-``` text
+```text
 2 Pods
  ↓
 1 Pod crashes
@@ -772,7 +774,7 @@ Kubernetes replaces it
 2 healthy Pods
 ```
 
-------------------------------------------------------------------------
+---
 
 # 20. Kubernetes Security Context
 
@@ -780,7 +782,7 @@ The container should not run as root.
 
 Configure:
 
-``` text
+```text
 runAsNonRoot: true
 allowPrivilegeEscalation: false
 readOnlyRootFilesystem: true (where compatible)
@@ -790,7 +792,7 @@ Drop unnecessary Linux capabilities.
 
 The goal is to demonstrate container hardening.
 
-------------------------------------------------------------------------
+---
 
 # 21. Kubernetes RBAC
 
@@ -798,7 +800,7 @@ Create a dedicated ServiceAccount for the application.
 
 Do not give the application:
 
-``` text
+```text
 cluster-admin
 ```
 
@@ -806,7 +808,7 @@ unless there is an exceptional reason.
 
 Understand:
 
-``` text
+```text
 User
  ↓
 Role / ClusterRole
@@ -818,7 +820,7 @@ Permission
 
 Use least privilege.
 
-------------------------------------------------------------------------
+---
 
 # 22. NetworkPolicy
 
@@ -826,7 +828,7 @@ Implement network segmentation.
 
 Example:
 
-``` text
+```text
 Internet
    ↓
 Ingress
@@ -842,7 +844,7 @@ Other unnecessary communication should be blocked.
 
 Concept:
 
-``` text
+```text
 Default Deny
     ↓
 Explicitly Allow Required Traffic
@@ -850,7 +852,7 @@ Explicitly Allow Required Traffic
 
 This demonstrates Kubernetes network security.
 
-------------------------------------------------------------------------
+---
 
 # 23. Helm
 
@@ -858,26 +860,26 @@ Package the Kubernetes application using Helm.
 
 Chart:
 
-``` text
+```text
 charts/secureship/
 ```
 
 Use configurable values for:
 
--   Image repository
--   Image tag
--   Replica count
--   CPU
--   Memory
--   Service type
--   Ingress
--   Environment
--   HPA
--   Resources
+- Image repository
+- Image tag
+- Replica count
+- CPU
+- Memory
+- Service type
+- Ingress
+- Environment
+- HPA
+- Resources
 
 Do not duplicate complete manifests for every environment.
 
-------------------------------------------------------------------------
+---
 
 # 24. GitOps
 
@@ -887,7 +889,7 @@ The GitOps repository contains the desired state.
 
 Example:
 
-``` yaml
+```yaml
 image:
   repository: <ECR_REPOSITORY>
   tag: 91ac442
@@ -895,7 +897,7 @@ image:
 
 When CI creates a new image:
 
-``` text
+```text
 Image 91ac442
       ↓
 CI updates GitOps repo
@@ -907,13 +909,13 @@ Git commit
 
 Argo CD detects the change.
 
-------------------------------------------------------------------------
+---
 
 # 25. Argo CD
 
 Argo CD continuously compares:
 
-``` text
+```text
 Git Desired State
         VS
 Kubernetes Live State
@@ -921,7 +923,7 @@ Kubernetes Live State
 
 If they differ:
 
-``` text
+```text
 OutOfSync
 ```
 
@@ -929,7 +931,7 @@ Argo CD can reconcile the cluster to Git.
 
 Flow:
 
-``` text
+```text
 GitOps Repository
        ↓
      Argo CD
@@ -939,28 +941,28 @@ GitOps Repository
 
 Important topics:
 
--   Application
--   Project
--   Sync
--   Auto-sync
--   Health
--   Drift detection
--   Rollback
--   Reconciliation
+- Application
+- Project
+- Sync
+- Auto-sync
+- Health
+- Drift detection
+- Rollback
+- Reconciliation
 
-------------------------------------------------------------------------
+---
 
 # 26. GitOps Deployment Rule
 
 Do not make the GitHub Actions deployment stage run:
 
-``` bash
+```bash
 kubectl apply
 ```
 
 The preferred architecture is:
 
-``` text
+```text
 CI
  ↓
 Build + Security
@@ -976,26 +978,26 @@ Kubernetes
 
 This provides:
 
--   Auditability
--   Reproducibility
--   Git-based desired state
--   Easier rollback
--   Separation of CI and CD
+- Auditability
+- Reproducibility
+- Git-based desired state
+- Easier rollback
+- Separation of CI and CD
 
-------------------------------------------------------------------------
+---
 
 # 27. Environment Strategy
 
 Create:
 
-``` text
+```text
 dev
 prod
 ```
 
 Example:
 
-``` text
+```text
 environments/
 ├── dev/
 │   └── values.yaml
@@ -1005,19 +1007,19 @@ environments/
 
 Development can have:
 
-``` text
+```text
 replicas: 1
 ```
 
 Production:
 
-``` text
+```text
 replicas: 2 or more
 ```
 
 Production should also have stricter resource/security settings.
 
-------------------------------------------------------------------------
+---
 
 # 28. Kyverno
 
@@ -1031,7 +1033,7 @@ Required policies:
 
 Reject:
 
-``` text
+```text
 privileged: true
 ```
 
@@ -1043,7 +1045,7 @@ Reject workloads that do not enforce non-root execution.
 
 Require:
 
-``` text
+```text
 resources:
   requests:
   limits:
@@ -1053,7 +1055,7 @@ resources:
 
 Only allow images from:
 
-``` text
+```text
 AWS ECR
 ```
 
@@ -1061,7 +1063,7 @@ or another approved registry.
 
 This creates a strong security story:
 
-``` text
+```text
 Developer submits workload
         ↓
 Kubernetes Admission
@@ -1073,7 +1075,7 @@ Policy Validation
 ALLOW / DENY
 ```
 
-------------------------------------------------------------------------
+---
 
 # 29. Terraform
 
@@ -1081,7 +1083,7 @@ Provision AWS infrastructure using Terraform.
 
 Suggested structure:
 
-``` text
+```text
 terraform/
 ├── main.tf
 ├── variables.tf
@@ -1097,17 +1099,17 @@ terraform/
 
 Provision:
 
--   VPC
--   Subnets
--   Internet/NAT components as required
--   Security groups
--   IAM
--   ECR
--   EKS
+- VPC
+- Subnets
+- Internet/NAT components as required
+- Security groups
+- IAM
+- ECR
+- EKS
 
 Do not commit:
 
-``` text
+```text
 terraform.tfvars
 ```
 
@@ -1115,7 +1117,7 @@ if it contains secrets.
 
 Also understand Terraform state and state locking.
 
-------------------------------------------------------------------------
+---
 
 # 30. AWS EKS
 
@@ -1123,20 +1125,20 @@ Use EKS for the production-style Kubernetes environment.
 
 Understand:
 
--   EKS control plane
--   Worker nodes
--   Node groups
--   IAM
--   VPC networking
--   Security groups
--   Kubernetes API access
--   EKS add-ons
+- EKS control plane
+- Worker nodes
+- Node groups
+- IAM
+- VPC networking
+- Security groups
+- Kubernetes API access
+- EKS add-ons
 
 Do not blindly use a large expensive cluster.
 
 For a portfolio project, minimize cost.
 
-------------------------------------------------------------------------
+---
 
 # 31. HPA
 
@@ -1144,7 +1146,7 @@ Implement Horizontal Pod Autoscaler.
 
 Example:
 
-``` text
+```text
 CPU > threshold
      ↓
 HPA
@@ -1154,7 +1156,7 @@ Increase replicas
 
 Example:
 
-``` text
+```text
 2 replicas
    ↓
 CPU increases
@@ -1164,14 +1166,14 @@ CPU increases
 
 Understand:
 
--   CPU utilization
--   Memory utilization
--   Metrics Server
--   minReplicas
--   maxReplicas
--   scaling behavior
+- CPU utilization
+- Memory utilization
+- Metrics Server
+- minReplicas
+- maxReplicas
+- scaling behavior
 
-------------------------------------------------------------------------
+---
 
 # 32. Prometheus
 
@@ -1179,24 +1181,24 @@ Use Prometheus to collect metrics.
 
 Monitor:
 
--   CPU
--   Memory
--   Pod count
--   Pod restarts
--   Request count
--   Request latency
--   Error rate
--   Kubernetes node health
+- CPU
+- Memory
+- Pod count
+- Pod restarts
+- Request count
+- Request latency
+- Error rate
+- Kubernetes node health
 
 Understand:
 
--   Metrics
--   Scraping
--   Targets
--   PromQL
--   Exporters
+- Metrics
+- Scraping
+- Targets
+- PromQL
+- Exporters
 
-------------------------------------------------------------------------
+---
 
 # 33. Grafana
 
@@ -1208,26 +1210,26 @@ Minimum dashboards:
 
 Show:
 
--   Nodes
--   Pods
--   CPU
--   Memory
--   Restarts
--   Replica availability
+- Nodes
+- Pods
+- CPU
+- Memory
+- Restarts
+- Replica availability
 
 ## Application Dashboard
 
 Show:
 
--   Requests
--   Error rate
--   Latency
--   Throughput
+- Requests
+- Error rate
+- Latency
+- Throughput
 
 Do not create dashboards only for screenshots. Make the metrics actually
 useful.
 
-------------------------------------------------------------------------
+---
 
 # 34. Loki
 
@@ -1235,7 +1237,7 @@ Use Loki for centralized logs.
 
 Flow:
 
-``` text
+```text
 Application
     ↓
 Log Collector
@@ -1247,7 +1249,7 @@ Grafana
 
 Be able to search:
 
-``` text
+```text
 ERROR
 WARN
 request-id
@@ -1257,7 +1259,7 @@ service
 
 Understand the difference between:
 
-``` text
+```text
 Metrics
 Logs
 Traces
@@ -1265,7 +1267,7 @@ Traces
 
 Tracing is optional for this project.
 
-------------------------------------------------------------------------
+---
 
 # 35. Alerting
 
@@ -1273,7 +1275,7 @@ Create at least a few alerts.
 
 Examples:
 
-``` text
+```text
 Pod CrashLooping
 High CPU
 High Memory
@@ -1284,7 +1286,7 @@ Deployment replicas unavailable
 
 Example:
 
-``` text
+```text
 Error rate > threshold
         ↓
 Prometheus Alert
@@ -1297,13 +1299,13 @@ Notification
 The notification destination can be Slack, email, Discord, or another
 suitable channel.
 
-------------------------------------------------------------------------
+---
 
 # 36. Security Gates
 
 The final pipeline should contain explicit gates.
 
-``` text
+```text
                   CI
                    │
         ┌──────────┼──────────┐
@@ -1334,7 +1336,7 @@ The final pipeline should contain explicit gates.
 The important point is that security tools influence the deployment
 decision.
 
-------------------------------------------------------------------------
+---
 
 # 37. Rollback
 
@@ -1342,7 +1344,7 @@ Demonstrate a rollback.
 
 Example:
 
-``` text
+```text
 Production
    ↓
 Version A
@@ -1350,13 +1352,13 @@ Version A
 
 Deploy:
 
-``` text
+```text
 Version B
 ```
 
 If Version B is broken:
 
-``` text
+```text
 GitOps
    ↓
 Revert commit
@@ -1368,7 +1370,7 @@ Version A
 
 This is one of the most valuable GitOps demonstrations.
 
-------------------------------------------------------------------------
+---
 
 # 38. Failure Scenarios to Demonstrate
 
@@ -1378,7 +1380,7 @@ The project should intentionally test failures.
 
 Expected:
 
-``` text
+```text
 Pipeline FAILS
 Deployment does not happen
 ```
@@ -1387,7 +1389,7 @@ Deployment does not happen
 
 Expected:
 
-``` text
+```text
 Gitleaks detects secret
 Pipeline FAILS
 ```
@@ -1396,7 +1398,7 @@ Pipeline FAILS
 
 Expected:
 
-``` text
+```text
 Dependency scanner detects CVE
 Pipeline FAILS
 ```
@@ -1405,7 +1407,7 @@ Pipeline FAILS
 
 Expected:
 
-``` text
+```text
 Trivy detects HIGH/CRITICAL CVE
 Image publication blocked
 ```
@@ -1414,13 +1416,13 @@ Image publication blocked
 
 Attempt:
 
-``` text
+```text
 privileged: true
 ```
 
 Expected:
 
-``` text
+```text
 Kubernetes admission DENIES workload
 ```
 
@@ -1428,7 +1430,7 @@ Kubernetes admission DENIES workload
 
 Expected:
 
-``` text
+```text
 Kubernetes restarts pod
 Prometheus records restart
 Grafana shows problem
@@ -1440,23 +1442,23 @@ Manually change a Kubernetes resource.
 
 Expected:
 
-``` text
+```text
 Argo CD detects drift
 ```
 
 Depending on sync configuration:
 
-``` text
+```text
 Argo CD reconciles desired Git state
 ```
 
-------------------------------------------------------------------------
+---
 
 # 39. Observability Demo
 
 A strong demo sequence:
 
-``` text
+```text
 Deploy application
        ↓
 Open Grafana
@@ -1478,13 +1480,13 @@ Observe recovery
 
 This makes the project feel like an actual operational platform.
 
-------------------------------------------------------------------------
+---
 
 # 40. Project Folder Structure
 
 Recommended final structure:
 
-``` text
+```text
 secureship/
 │
 ├── app/
@@ -1536,7 +1538,7 @@ secureship/
 In the real implementation, keep the application repository and GitOps
 repository separate. This structure is a conceptual workspace layout.
 
-------------------------------------------------------------------------
+---
 
 # 41. CI/CD Pipeline Design
 
@@ -1544,13 +1546,13 @@ repository separate. This structure is a conceptual workspace layout.
 
 Runs on:
 
-``` text
+```text
 pull_request
 ```
 
 Stages:
 
-``` text
+```text
 Checkout
  ↓
 Install
@@ -1572,7 +1574,7 @@ It should not publish a production image.
 
 Runs after merge:
 
-``` text
+```text
 Checkout
  ↓
 Tests
@@ -1590,32 +1592,32 @@ Push ECR
 Update GitOps
 ```
 
-------------------------------------------------------------------------
+---
 
 # 42. GitOps Update Mechanism
 
 After a successful image build:
 
-``` text
+```text
 IMAGE_TAG = Git SHA
 ```
 
 Update:
 
-``` yaml
+```yaml
 image:
   tag: <Git SHA>
 ```
 
 Commit to GitOps repository:
 
-``` text
+```text
 chore: deploy image <sha>
 ```
 
 Then:
 
-``` text
+```text
 GitOps commit
       ↓
 Argo CD detects change
@@ -1628,13 +1630,13 @@ updates.
 
 Do not hard-code tokens.
 
-------------------------------------------------------------------------
+---
 
 # 43. Secrets Management
 
 Never store:
 
-``` text
+```text
 AWS_ACCESS_KEY
 AWS_SECRET_ACCESS_KEY
 DATABASE_PASSWORD
@@ -1645,15 +1647,15 @@ in Git.
 
 Use appropriate mechanisms such as:
 
--   GitHub Secrets
--   AWS IAM
--   Kubernetes Secrets
--   External Secrets Operator as an optional advanced improvement
--   AWS Secrets Manager as an optional advanced improvement
+- GitHub Secrets
+- AWS IAM
+- Kubernetes Secrets
+- External Secrets Operator as an optional advanced improvement
+- AWS Secrets Manager as an optional advanced improvement
 
 For the first version, keep secret management simple and secure.
 
-------------------------------------------------------------------------
+---
 
 # 44. Security Principles
 
@@ -1667,7 +1669,7 @@ Every identity gets only the permissions it requires.
 
 Security exists at multiple layers:
 
-``` text
+```text
 Source Code
    ↓
 Dependencies
@@ -1685,7 +1687,7 @@ Runtime
 
 Find problems before production.
 
-``` text
+```text
 Developer
    ↓
 CI Security
@@ -1701,7 +1703,7 @@ Runtime Monitoring
 
 Deploy specific image versions/digests rather than mutable `latest`.
 
-------------------------------------------------------------------------
+---
 
 # 45. Cost Control
 
@@ -1709,16 +1711,16 @@ AWS costs matter.
 
 For a portfolio project:
 
--   Use the smallest practical EKS setup.
--   Destroy infrastructure when not using it.
--   Avoid unnecessary NAT gateways where architecture permits.
--   Keep ECR lifecycle policies.
--   Avoid oversized worker nodes.
--   Do not leave development clusters running permanently.
+- Use the smallest practical EKS setup.
+- Destroy infrastructure when not using it.
+- Avoid unnecessary NAT gateways where architecture permits.
+- Keep ECR lifecycle policies.
+- Avoid oversized worker nodes.
+- Do not leave development clusters running permanently.
 
 Use:
 
-``` bash
+```bash
 terraform destroy
 ```
 
@@ -1726,7 +1728,7 @@ when the environment is no longer needed.
 
 Never blindly destroy production resources.
 
-------------------------------------------------------------------------
+---
 
 # 46. Implementation Roadmap
 
@@ -1736,20 +1738,20 @@ Estimated: 2--3 hours
 
 Tasks:
 
--   Create Express application
--   Add health endpoints
--   Add tests
--   Create Dockerfile
--   Build image
--   Run locally
+- Create Express application
+- Add health endpoints
+- Add tests
+- Create Dockerfile
+- Build image
+- Run locally
 
 Deliverable:
 
-``` text
+```text
 Application runs inside Docker
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Phase 2 --- CI
 
@@ -1757,19 +1759,19 @@ Estimated: 2--3 hours
 
 Tasks:
 
--   GitHub Actions
--   Lint
--   Unit tests
--   Pull request checks
--   Branch protection
+- GitHub Actions
+- Lint
+- Unit tests
+- Pull request checks
+- Branch protection
 
 Deliverable:
 
-``` text
+```text
 Git push → automated CI
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Phase 3 --- DevSecOps
 
@@ -1777,20 +1779,20 @@ Estimated: 4--6 hours
 
 Tasks:
 
--   SonarQube
--   Gitleaks
--   Dependency scanning
--   Trivy
--   Security thresholds
--   SBOM
+- SonarQube
+- Gitleaks
+- Dependency scanning
+- Trivy
+- Security thresholds
+- SBOM
 
 Deliverable:
 
-``` text
+```text
 Insecure code/image → pipeline blocked
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Phase 4 --- ECR
 
@@ -1798,18 +1800,18 @@ Estimated: 1--2 hours
 
 Tasks:
 
--   Create ECR
--   Configure authentication
--   Push immutable image
--   Configure lifecycle policy
+- Create ECR
+- Configure authentication
+- Push immutable image
+- Configure lifecycle policy
 
 Deliverable:
 
-``` text
+```text
 Secure image → ECR
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Phase 5 --- Kubernetes + Helm
 
@@ -1817,23 +1819,23 @@ Estimated: 3--5 hours
 
 Tasks:
 
--   Kubernetes deployment
--   Service
--   Ingress
--   ConfigMap
--   Secret
--   Probes
--   Resource limits
--   Security context
--   Helm chart
+- Kubernetes deployment
+- Service
+- Ingress
+- ConfigMap
+- Secret
+- Probes
+- Resource limits
+- Security context
+- Helm chart
 
 Deliverable:
 
-``` text
+```text
 Application running on Kubernetes
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Phase 6 --- GitOps
 
@@ -1841,20 +1843,20 @@ Estimated: 2--4 hours
 
 Tasks:
 
--   Create GitOps repo
--   Configure Helm values
--   Install Argo CD
--   Configure Application
--   Enable synchronization
--   Test rollback
+- Create GitOps repo
+- Configure Helm values
+- Install Argo CD
+- Configure Application
+- Enable synchronization
+- Test rollback
 
 Deliverable:
 
-``` text
+```text
 Git change → Argo CD → Kubernetes
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Phase 7 --- Terraform + AWS
 
@@ -1862,22 +1864,22 @@ Estimated: 4--6 hours
 
 Tasks:
 
--   VPC
--   IAM
--   ECR
--   EKS
--   Node group
--   Outputs
--   Variables
--   State management
+- VPC
+- IAM
+- ECR
+- EKS
+- Node group
+- Outputs
+- Variables
+- State management
 
 Deliverable:
 
-``` text
+```text
 AWS infrastructure reproducible using Terraform
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Phase 8 --- Kubernetes Security
 
@@ -1885,21 +1887,21 @@ Estimated: 2--4 hours
 
 Tasks:
 
--   RBAC
--   ServiceAccount
--   NetworkPolicy
--   Kyverno
--   Non-root policy
--   Resource policy
--   Approved registry policy
+- RBAC
+- ServiceAccount
+- NetworkPolicy
+- Kyverno
+- Non-root policy
+- Resource policy
+- Approved registry policy
 
 Deliverable:
 
-``` text
+```text
 Unsafe workload → admission denied
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Phase 9 --- Observability
 
@@ -1907,20 +1909,20 @@ Estimated: 3--5 hours
 
 Tasks:
 
--   Prometheus
--   Grafana
--   Loki
--   Dashboards
--   Alerts
--   Failure testing
+- Prometheus
+- Grafana
+- Loki
+- Dashboards
+- Alerts
+- Failure testing
 
 Deliverable:
 
-``` text
+```text
 Application + cluster are observable
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Phase 10 --- Documentation + Demo
 
@@ -1928,23 +1930,23 @@ Estimated: 2--3 hours
 
 Create:
 
--   Architecture diagram
--   README
--   CI screenshot
--   Trivy screenshot
--   Argo CD screenshot
--   Kubernetes screenshot
--   Grafana dashboard
--   Kyverno rejection example
--   Rollback demonstration
+- Architecture diagram
+- README
+- CI screenshot
+- Trivy screenshot
+- Argo CD screenshot
+- Kubernetes screenshot
+- Grafana dashboard
+- Kyverno rejection example
+- Rollback demonstration
 
-------------------------------------------------------------------------
+---
 
 # 47. Expected Total Time
 
 Approximate:
 
-``` text
+```text
 Phase 1        2–3 h
 Phase 2        2–3 h
 Phase 3        4–6 h
@@ -1961,14 +1963,14 @@ TOTAL          25–41 h
 
 If learning while building:
 
-``` text
+```text
 35–50 hours
 ```
 
 Do not rush. Understanding the architecture is more important than
 finishing quickly.
 
-------------------------------------------------------------------------
+---
 
 # 48. MVP vs Full Version
 
@@ -1976,7 +1978,7 @@ finishing quickly.
 
 Build first:
 
-``` text
+```text
 GitHub
  ↓
 GitHub Actions
@@ -1994,7 +1996,7 @@ Kubernetes
 
 Estimated:
 
-``` text
+```text
 8–12 hours
 ```
 
@@ -2002,7 +2004,7 @@ Estimated:
 
 Add:
 
-``` text
+```text
 SonarQube
 Gitleaks
 SBOM
@@ -2013,7 +2015,7 @@ GitOps
 
 Estimated total:
 
-``` text
+```text
 16–25 hours
 ```
 
@@ -2021,7 +2023,7 @@ Estimated total:
 
 Add:
 
-``` text
+```text
 Terraform
 EKS
 Kyverno
@@ -2037,11 +2039,11 @@ Rollback
 
 Estimated total:
 
-``` text
+```text
 25–41 hours
 ```
 
-------------------------------------------------------------------------
+---
 
 # 49. AI Agent Instructions
 
@@ -2068,7 +2070,7 @@ Implement one phase at a time.
 
 Order:
 
-``` text
+```text
 Application
 → Docker
 → CI
@@ -2087,21 +2089,21 @@ Application
 
 After each implementation:
 
--   Run tests.
--   Build the application.
--   Build the Docker image.
--   Validate YAML.
--   Validate Helm.
--   Validate Terraform.
--   Validate Kubernetes manifests.
--   Check logs.
--   Document errors and fixes.
+- Run tests.
+- Build the application.
+- Build the Docker image.
+- Validate YAML.
+- Validate Helm.
+- Validate Terraform.
+- Validate Kubernetes manifests.
+- Check logs.
+- Document errors and fixes.
 
 ## Rule 4 --- Never Fake Infrastructure
 
 Do not create documentation claiming:
 
-``` text
+```text
 EKS deployed
 Argo CD working
 Trivy passed
@@ -2117,7 +2119,7 @@ mistaken for real credentials.
 
 Use:
 
-``` text
+```text
 .env.example
 terraform.tfvars.example
 ```
@@ -2128,14 +2130,14 @@ with placeholders.
 
 Containers should:
 
--   Run as non-root.
--   Drop unnecessary privileges.
--   Avoid privileged mode.
--   Use resource limits.
--   Use health checks.
--   Use least-privilege RBAC.
--   Use immutable image tags.
--   Avoid plaintext credentials.
+- Run as non-root.
+- Drop unnecessary privileges.
+- Avoid privileged mode.
+- Use resource limits.
+- Use health checks.
+- Use least-privilege RBAC.
+- Use immutable image tags.
+- Avoid plaintext credentials.
 
 ## Rule 7 --- Do Not Use `latest`
 
@@ -2145,7 +2147,7 @@ Use Git SHA or immutable image digest.
 
 Do not bypass Argo CD with:
 
-``` bash
+```bash
 kubectl apply
 ```
 
@@ -2159,7 +2161,7 @@ A security scanner that only prints warnings is not sufficient.
 
 Where policy requires blocking:
 
-``` text
+```text
 Security failure → CI failure → no release
 ```
 
@@ -2167,20 +2169,20 @@ Security failure → CI failure → no release
 
 Every major implementation must update:
 
--   README
--   Architecture
--   Setup instructions
--   Troubleshooting
--   Security model
--   Deployment process
+- README
+- Architecture
+- Setup instructions
+- Troubleshooting
+- Security model
+- Deployment process
 
-------------------------------------------------------------------------
+---
 
 # 50. AI Agent Phase Prompt
 
 Use this as the master instruction for an AI coding agent:
 
-``` text
+```text
 You are the implementation agent for the SecureShip project.
 
 Build a production-style DevSecOps and GitOps platform.
@@ -2296,7 +2298,7 @@ For every major technology, document:
 Prioritize correctness, security, reproducibility and learning value over speed.
 ```
 
-------------------------------------------------------------------------
+---
 
 # 51. Interview Topics to Prepare
 
@@ -2304,134 +2306,134 @@ The project should allow you to answer these questions.
 
 ## Git
 
--   Git branching
--   Merge vs rebase
--   Pull requests
--   Branch protection
--   Git tags
--   Commit SHA
+- Git branching
+- Merge vs rebase
+- Pull requests
+- Branch protection
+- Git tags
+- Commit SHA
 
 ## CI/CD
 
--   What is CI?
--   What is CD?
--   Why GitHub Actions?
--   Pipeline stages
--   Artifacts
--   Secrets
--   Runners
--   Failure handling
+- What is CI?
+- What is CD?
+- Why GitHub Actions?
+- Pipeline stages
+- Artifacts
+- Secrets
+- Runners
+- Failure handling
 
 ## Docker
 
--   Image vs container
--   Docker layers
--   Multi-stage builds
--   Container networking
--   Docker security
--   Non-root containers
+- Image vs container
+- Docker layers
+- Multi-stage builds
+- Container networking
+- Docker security
+- Non-root containers
 
 ## DevSecOps
 
--   DevOps vs DevSecOps
--   Shift-left security
--   Security gates
--   SAST
--   Dependency scanning
--   Secret scanning
--   Container scanning
--   SBOM
+- DevOps vs DevSecOps
+- Shift-left security
+- Security gates
+- SAST
+- Dependency scanning
+- Secret scanning
+- Container scanning
+- SBOM
 
 ## Trivy
 
--   What does Trivy scan?
--   What is CVE?
--   HIGH vs CRITICAL
--   Why scan before deployment?
--   How does the pipeline block vulnerable images?
+- What does Trivy scan?
+- What is CVE?
+- HIGH vs CRITICAL
+- Why scan before deployment?
+- How does the pipeline block vulnerable images?
 
 ## Kubernetes
 
--   Pod
--   Deployment
--   Service
--   Ingress
--   ConfigMap
--   Secret
--   HPA
--   Namespace
--   ServiceAccount
--   RBAC
+- Pod
+- Deployment
+- Service
+- Ingress
+- ConfigMap
+- Secret
+- HPA
+- Namespace
+- ServiceAccount
+- RBAC
 
 ## Helm
 
--   Chart
--   Values
--   Templates
--   Release
--   Why Helm instead of raw YAML?
+- Chart
+- Values
+- Templates
+- Release
+- Why Helm instead of raw YAML?
 
 ## GitOps
 
--   What is GitOps?
--   Why Git is the source of truth?
--   Why two repositories?
--   How does rollback work?
--   What is drift?
+- What is GitOps?
+- Why Git is the source of truth?
+- Why two repositories?
+- How does rollback work?
+- What is drift?
 
 ## Argo CD
 
--   What is reconciliation?
--   What is OutOfSync?
--   Auto-sync
--   Health
--   Rollback
--   Desired state vs live state
+- What is reconciliation?
+- What is OutOfSync?
+- Auto-sync
+- Health
+- Rollback
+- Desired state vs live state
 
 ## Terraform
 
--   IaC
--   State
--   Plan
--   Apply
--   Destroy
--   Modules
--   Variables
--   Outputs
--   State locking
+- IaC
+- State
+- Plan
+- Apply
+- Destroy
+- Modules
+- Variables
+- Outputs
+- State locking
 
 ## AWS
 
--   VPC
--   Subnets
--   Security groups
--   IAM
--   ECR
--   EKS
--   Node groups
+- VPC
+- Subnets
+- Security groups
+- IAM
+- ECR
+- EKS
+- Node groups
 
 ## Kubernetes Security
 
--   Least privilege
--   RBAC
--   NetworkPolicy
--   SecurityContext
--   Kyverno
--   Admission control
--   Non-root containers
--   Privileged containers
+- Least privilege
+- RBAC
+- NetworkPolicy
+- SecurityContext
+- Kyverno
+- Admission control
+- Non-root containers
+- Privileged containers
 
 ## Observability
 
--   Metrics vs logs
--   Prometheus
--   PromQL
--   Grafana
--   Loki
--   Alerts
--   SLI/SLO basics
+- Metrics vs logs
+- Prometheus
+- PromQL
+- Grafana
+- Loki
+- Alerts
+- SLI/SLO basics
 
-------------------------------------------------------------------------
+---
 
 # 52. Final Resume Outcome
 
@@ -2439,61 +2441,61 @@ The project should ultimately be described approximately as:
 
 **SecureShip --- End-to-End DevSecOps & GitOps Platform**
 
--   Built an end-to-end DevSecOps pipeline using GitHub Actions with
-    automated testing, SonarQube SAST, Gitleaks secret scanning,
-    dependency analysis, Trivy container scanning and SBOM generation.
--   Containerized and deployed a Node.js application to AWS EKS using
-    Docker, Helm and Argo CD, implementing GitOps-based continuous
-    delivery with Git as the source of truth.
--   Provisioned AWS infrastructure using Terraform and implemented
-    Kubernetes security controls including Kyverno admission policies,
-    RBAC, NetworkPolicies, non-root containers and resource governance.
--   Implemented Prometheus, Grafana and Loki for Kubernetes/application
-    observability, including dashboards, logs, health monitoring and
-    alerts.
--   Designed security gates and rollback workflows to prevent vulnerable
-    container images and non-compliant Kubernetes workloads from
-    reaching production.
+- Built an end-to-end DevSecOps pipeline using GitHub Actions with
+  automated testing, SonarQube SAST, Gitleaks secret scanning,
+  dependency analysis, Trivy container scanning and SBOM generation.
+- Containerized and deployed a Node.js application to AWS EKS using
+  Docker, Helm and Argo CD, implementing GitOps-based continuous
+  delivery with Git as the source of truth.
+- Provisioned AWS infrastructure using Terraform and implemented
+  Kubernetes security controls including Kyverno admission policies,
+  RBAC, NetworkPolicies, non-root containers and resource governance.
+- Implemented Prometheus, Grafana and Loki for Kubernetes/application
+  observability, including dashboards, logs, health monitoring and
+  alerts.
+- Designed security gates and rollback workflows to prevent vulnerable
+  container images and non-compliant Kubernetes workloads from
+  reaching production.
 
-------------------------------------------------------------------------
+---
 
 # 53. Definition of Done
 
 The project is complete only when all of these work:
 
--   [ ] Application runs locally
--   [ ] Unit tests pass
--   [ ] Docker image builds
--   [ ] Container runs as non-root
--   [ ] GitHub Actions CI works
--   [ ] SonarQube scan works
--   [ ] Gitleaks works
--   [ ] Dependency scan works
--   [ ] Trivy image scan works
--   [ ] Vulnerable image blocks release
--   [ ] SBOM is generated
--   [ ] ECR receives approved images
--   [ ] Kubernetes cluster works
--   [ ] Helm deployment works
--   [ ] Health probes work
--   [ ] HPA works
--   [ ] RBAC works
--   [ ] NetworkPolicy works
--   [ ] Kyverno blocks invalid workloads
--   [ ] GitOps repository works
--   [ ] Argo CD sync works
--   [ ] Git change deploys automatically
--   [ ] Rollback works
--   [ ] Terraform provisions infrastructure
--   [ ] Prometheus collects metrics
--   [ ] Grafana dashboard works
--   [ ] Loki collects/searches logs
--   [ ] Alerts work
--   [ ] Documentation is complete
--   [ ] Architecture diagram is included
--   [ ] Failure scenarios are demonstrated
+- [ ] Application runs locally
+- [ ] Unit tests pass
+- [ ] Docker image builds
+- [ ] Container runs as non-root
+- [ ] GitHub Actions CI works
+- [ ] SonarQube scan works
+- [ ] Gitleaks works
+- [ ] Dependency scan works
+- [ ] Trivy image scan works
+- [ ] Vulnerable image blocks release
+- [ ] SBOM is generated
+- [ ] ECR receives approved images
+- [ ] Kubernetes cluster works
+- [ ] Helm deployment works
+- [ ] Health probes work
+- [ ] HPA works
+- [ ] RBAC works
+- [ ] NetworkPolicy works
+- [ ] Kyverno blocks invalid workloads
+- [ ] GitOps repository works
+- [ ] Argo CD sync works
+- [ ] Git change deploys automatically
+- [ ] Rollback works
+- [ ] Terraform provisions infrastructure
+- [ ] Prometheus collects metrics
+- [ ] Grafana dashboard works
+- [ ] Loki collects/searches logs
+- [ ] Alerts work
+- [ ] Documentation is complete
+- [ ] Architecture diagram is included
+- [ ] Failure scenarios are demonstrated
 
-------------------------------------------------------------------------
+---
 
 # 54. Final Project Philosophy
 
@@ -2501,7 +2503,7 @@ Do not build this project simply to list technologies.
 
 Build it to demonstrate this engineering lifecycle:
 
-``` text
+```text
 WRITE CODE
     ↓
 TEST CODE

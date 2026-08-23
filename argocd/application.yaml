@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: secureship-dev
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/raxj06/secureship.git
+    targetRevision: deploy
+    path: helm/secureship
+    helm:
+      valueFiles:
+        - $values/environments/dev/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: secureship-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

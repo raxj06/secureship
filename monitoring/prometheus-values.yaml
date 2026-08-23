@@ -1,0 +1,27 @@
+alertmanager:
+  enabled: false
+pushgateway:
+  enabled: false
+nodeExporter:
+  enabled: false
+prometheus-node-exporter:
+  enabled: false
+prometheus-pushgateway:
+  enabled: false
+kube-state-metrics:
+  enabled: false
+kubeStateMetrics:
+  enabled: false
+server:
+  persistentVolume:
+    enabled: false
+  retention: 6h
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+  extraFlags:
+    - web.enable-lifecycle
