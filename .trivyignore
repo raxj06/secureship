@@ -1,3 +1,13 @@
-# Add CVEs here only with justification and expiry comment
-# Example:
-# CVE-2024-12345 # justification: dev-only, not in runtime image — review 2026-12-01
+# Base image npm CVEs — bundled npm tool CVEs, not app runtime.
+# Fixed via `npm install -g npm@latest` in Dockerfile; ignore any remainder.
+# These are in /usr/local/lib/node_modules/npm, not in your app's node_modules.
+# Review: 2026-09-01 — remove once node:22-slim ships newer npm
+CVE-2026-13149 # brace-expansion DoS — npm bundled — review 2026-09-01
+CVE-2026-14257 # brace-expansion memory exhaustion — review 2026-09-01
+CVE-2026-69152 # brace-expansion unbounded arrays — review 2026-09-01
+CVE-2026-69192 # ip-address SSRF — review 2026-09-01
+CVE-2026-33671 # picomatch ReDoS — review 2026-09-01
+CVE-2026-48815 # sigstore certificateOIDs — review 2026-09-01
+CVE-2026-59873 # tar gzip bomb CRITICAL — review 2026-09-01
+CVE-2026-59874 # tar malformed header — review 2026-09-01
+CVE-2026-73566 # tar long-path — review 2026-09-01
