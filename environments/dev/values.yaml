@@ -6,17 +6,17 @@ global:
 services:
   api-gateway:
     repository: secureship/api-gateway
-    tag: 8823d886bf8df9d8522406e4570f51fd38bc9ed2
+    tag: 3a1a77de1772203c6709c73a3c31ee4586f14073
     port: 8000
   order-service:
     repository: secureship/order-service
-    tag: 8823d886bf8df9d8522406e4570f51fd38bc9ed2
+    tag: 3a1a77de1772203c6709c73a3c31ee4586f14073
     port: 8001
   tracking-service:
     repository: secureship/tracking-service
-    tag: 8823d886bf8df9d8522406e4570f51fd38bc9ed2
+    tag: 3a1a77de1772203c6709c73a3c31ee4586f14073
     port: 8002
   notification-service:
     repository: secureship/notification-service
-    tag: 8823d886bf8df9d8522406e4570f51fd38bc9ed2
+    tag: 3a1a77de1772203c6709c73a3c31ee4586f14073
     port: 8003
