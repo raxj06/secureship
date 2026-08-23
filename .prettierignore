@@ -1,0 +1,10 @@
+node_modules
+dist
+helm
+kyverno
+argocd
+monitoring
+terraform
+scripts
+.git
+coverage
