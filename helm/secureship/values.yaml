@@ -1,0 +1,55 @@
+global:
+  registry: ''
+  region: ap-south-1
+
+namespace: secureship-dev
+
+services:
+  api-gateway:
+    repository: secureship/api-gateway
+    tag: latest
+    port: 8000
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+  order-service:
+    repository: secureship/order-service
+    tag: latest
+    port: 8001
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+  tracking-service:
+    repository: secureship/tracking-service
+    tag: latest
+    port: 8002
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+  notification-service:
+    repository: secureship/notification-service
+    tag: latest
+    port: 8003
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
