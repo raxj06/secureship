@@ -9,9 +9,9 @@ prometheus-node-exporter:
 prometheus-pushgateway:
   enabled: false
 kube-state-metrics:
-  enabled: false
+  enabled: true
 kubeStateMetrics:
-  enabled: false
+  enabled: true
 server:
   persistentVolume:
     enabled: false
